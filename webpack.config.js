@@ -26,16 +26,30 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.jsx?$/,
+        enforce: "pre",
+        loader: "eslint-loader",
+        exclude: /node_modules/,
+        options: {
+          emitWarning: true,
+          configFile: "./.eslintrc.json"
+          }
+        },
+      {
         test: /\.jsx?$/, //indicates which files the loader should transform
         loader: "babel-loader", //instructs Webpack to use Babel as a loader
         exclude: /node_modules/, //outlines which files should not be transformed by the loader
         options: { //tells Babel what kind of project we're working with (React) and what version of JS code should be transpiled.
+        options: {
           presets: [
-            "es2015",
-            "react"
+            ["es2015", {"modules": false}],
+            "react",
+          ],
+          plugins: [
+            "react-hot-loader/babel",
+            "styled-jsx/babel"
           ]
         }
-      },
-    ],
-  }
-};
+      }
+    ]
+  },
